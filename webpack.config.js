@@ -8,7 +8,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { utils } = require('stylus');
 const Dotenv = require('dotenv-webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -16,6 +15,7 @@ module.exports = {
         path: path.resolve(__dirname,'dist'),
         filename: '[name].[contenthash].js',
         assetModuleFilename: 'assets/images/[hash][ext][query]',
+        clean: true,
     },
     resolve: {
         extensions:['.js'],
@@ -52,14 +52,14 @@ module.exports = {
                     loader: 'url-loader',
                     options: {
                         limit: 10000,
-                        mimeType: "application/font-woff",
+                        mimetype: "application/font-woff",
                         name:"[name].[contenthash].[ext]",
-                        outputPath: "./assets/fonts",
-                        publicPath: "../assets/fonts",
+                        outputPath: "./assets/fonts/",
+                        publicPath: "../assets/fonts/",
                         esModule: false,
                     },
                 }
-            }
+            },
         ]
     },
     plugins: [
@@ -80,7 +80,6 @@ module.exports = {
             ]
         }),
         new Dotenv(),
-        new CleanWebpackPlugin(),
     ],
     optimization: {
         minimize: true,

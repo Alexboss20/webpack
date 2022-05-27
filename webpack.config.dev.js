@@ -5,8 +5,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 const { url } = require('inspector');
 const { loader } = require('mini-css-extract-plugin');
 const { utils } = require('stylus');
-const Dotenv = require('dotenv-webpack')
-const cleanWebpackPlugin = require('clean-webpack-plugin')
+const Dotenv = require('dotenv-webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/index.js',
@@ -16,7 +16,7 @@ module.exports = {
         assetModuleFilename: 'assets/images/[hash][ext][query]',
     },
     mode: 'development',
-    watch: true,
+    devtool: 'source-map',
     resolve: {
         extensions:['.js'],
         alias: {
@@ -52,10 +52,10 @@ module.exports = {
                     loader: 'url-loader',
                     options: {
                         limit: 10000,
-                        mimeType: "application/font-woff",
+                        mimetype: "application/font-woff",
                         name:"[name].[contenthash].[ext]",
-                        outputPath: "./assets/fonts",
-                        publicPath: "../assets/fonts",
+                        outputPath: "./assets/fonts/",
+                        publicPath: "../assets/fonts/",
                         esModule: false,
                     },
                 }
@@ -80,5 +80,13 @@ module.exports = {
             ]
         }),
         new Dotenv(),
+        new BundleAnalyzerPlugin(),
     ],
+    devServer:{
+        static: path.join(__dirname, 'dist'),
+        compress: true,
+        historyApiFallback: true,
+        port: 3006,
+        open: true,
+    },
 }
